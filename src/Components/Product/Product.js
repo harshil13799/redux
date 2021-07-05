@@ -5,6 +5,8 @@ import { addToCart } from "../../redux/Shopping/shopping-action";
 
 function Product() {
   const [product, setProduct] = useState([{}]);
+
+  
   const dispatch = useDispatch();
 
   const getdata = async () => {
@@ -56,7 +58,9 @@ function Product() {
                       id: item.id,
                       title: item.title,
                       price: item.price,
-                      image:item.image
+                      image:item.image,
+                      qty:1,
+                      total:item.price
                     };
                     dispatch(addToCart(data));
                   }}

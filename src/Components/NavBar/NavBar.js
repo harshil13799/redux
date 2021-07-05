@@ -22,7 +22,6 @@ function NavBar() {
             alt="..."
             width="50px"
             onClick={() => {
-              alert("welcome");
               history.push("/cart");
               
             }}

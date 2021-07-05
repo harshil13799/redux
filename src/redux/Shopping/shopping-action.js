@@ -13,3 +13,15 @@ export const listcartitem = (id) => {
     payload: id,
   };
 };
+export const addQty =(data)=>{
+  return{
+    type:actionTypes.LOAD_CURRENT_ITEM,
+    payload:data,
+  };
+};
+export const decrementQty =(data)=>{
+  return{
+    type:actionTypes.DECREMENT_PRODUCT,
+    payload:data,
+  };
+};

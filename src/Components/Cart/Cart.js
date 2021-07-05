@@ -1,16 +1,26 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { listcartitem } from "../../redux/Shopping/shopping-action";
+import { addQty, decrementQty, decrementqty, listcartitem } from "../../redux/Shopping/shopping-action";
 import { useDispatch } from "react-redux";
 import img from "../Cart/empty-cart.jpg";
+import { addProductQuantity, addQuantity } from "../../redux/Shopping/cart-action";
 
 function Cart() {
   const cartdata = useSelector((state) => state.shop);
+  const {id,image,title,price,category}=cartdata;
+  const [totalprice,setTotalPrice]=useState(price);
+  const data = useSelector((state) => state.cart);
+  const [amt,setamt]=useState();
   const dispatch = useDispatch();
-  const [counter,setCounter]=useState(0)
+  const [counter,setCounter]=useState(1)
   console.log(cartdata.length);
+  let [totalAmount,settotalAmount]=useState(0);
+  useEffect(() => {
+    setTotalPrice(price * counter);
+  }, [])
   return (
+    
     <>
       {cartdata.length > 0 ? (
         <div
@@ -35,6 +45,11 @@ function Cart() {
                 <div class="card-body">
                   <h6>{item.title}</h6>
                   <p>${item.price}</p>
+                  <p>{item.qty}</p>
+                  <p>{item.total.toFixed(2)}</p>
+                 
+                  <button onClick={()=>{setCounter(counter + 1);dispatch(addQty({item}));settotalAmount(totalAmount += item.price);}}>+</button>
+                  <button onClick={()=>{setCounter(counter - 1);dispatch(decrementQty({item}));settotalAmount(totalAmount -= item.total);}}>-</button>
                   <button
                     type="button"
                     class="btn btn-outline-dark btn-sm"
@@ -45,23 +60,35 @@ function Cart() {
                   >
                     Remove
                   </button>
-                  <button onClick={()=>setCounter(counter + 1)}>+</button><p>{counter}</p> <button onClick={()=>{setCounter(counter - 1)}}>-</button>
-                  <p>{item.price * counter}</p>
+              
+                  
+                 {/* {amt.map((index)=>{
+
+                   setamt(amt += item.total);
+                   console.log("amt",amt);
+                 })} */}
+                 
                 </div>
               </div>
             </div>
+            
           ))}
+           <label>Total Amount:</label><h6>{totalAmount.toFixed(2)}</h6>
         </div>
+      
+           
       ) : (<>
         <div>
           <img src={img} alt="..." />
         </div>
+        
         <button
             type="button"
             class="my-3 btn btn-outline-dark btn-sm"
           >
             <Link to="/" className="Link-btn">Continue Shopping</Link>
           </button>
+          
       </>)}
     </>
   );
